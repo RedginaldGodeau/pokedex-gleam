@@ -89,8 +89,8 @@ pub fn get_by_id(id: Int, db: pog.Connection) -> Result(Pokemon, String) {
     Ok(response) -> {
       case response.rows {
         [pokemon] -> Ok(pokemon)
+        [poke, ..] -> Ok(poke)
         [] -> Error("Aucun Pokemon trouvé")
-        _ -> Error("Aucun Pokemon trouvé 2")
       }
     }
     Error(err) -> {
@@ -122,8 +122,8 @@ pub fn get_by_name(name: String, db: pog.Connection) -> Result(Pokemon, String) 
     Ok(response) -> {
       case response.rows {
         [pokemon] -> Ok(pokemon)
+        [poke, ..] -> Ok(poke)
         [] -> Error("Aucun Pokemon trouvé")
-        _ -> Error("Aucun Pokemon trouvé 2")
       }
     }
     Error(_) -> Error("Erreur lors de la request SQL")
@@ -140,6 +140,28 @@ pub fn count(db: pog.Connection) -> Result(Int, String) {
   case query {
     Ok(response) -> Ok(response.count)
     Error(_) -> Error("Une erreur est survenur lors de la requete")
+  }
+}
+
+pub fn get_all(db: pog.Connection) -> Result(List(Pokemon), String) {
+  let sql_query =
+    "
+    SELECT id, name, type_1, type_2, total, hp, attack, defense, sp_attack, sp_defense, speed, generation, legendary
+    FROM pokemon;
+    "
+
+  let row_decoder = {
+    pokemon_decoder()
+  }
+
+  let query =
+    pog.query(sql_query)
+    |> pog.returning(row_decoder)
+    |> pog.execute(db)
+
+  case query {
+    Ok(response) -> Ok(response.rows)
+    Error(_) -> Error("Erreur lors de la request SQL")
   }
 }
 
