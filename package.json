@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "tailwind:build": "npx @tailwindcss/cli -i ./src/app/assets/css/tailwindcss.css -o ./priv/static/main.css"
+  },
+  "dependencies": {
+    "@tailwindcss/cli": "^4.0.9",
+    "tailwindcss": "^4.0.9"
+  }
+}

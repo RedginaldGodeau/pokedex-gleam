@@ -9,7 +9,7 @@ RUN apk update && apk add --no-cache \
     sudo
 
 # Install Erlang (full package)
-RUN apk update && apk add --no-cache erlang-dev rebar3
+RUN apk update && apk add --no-cache erlang-dev rebar3 inotify-tools
 
 # Define an ARG for the Gleam version
 ARG GLEAM_VERSION=1.8.1
@@ -18,6 +18,6 @@ ARG GLEAM_VERSION=1.8.1
 RUN curl -fsSL https://github.com/gleam-lang/gleam/releases/download/v${GLEAM_VERSION}/gleam-v${GLEAM_VERSION}-x86_64-unknown-linux-musl.tar.gz \
     | tar -xzC /usr/local/bin gleam
 
-WORKDIR /app
+WORKDIR /webapp
 
-CMD gleam run
+CMD gleam run .

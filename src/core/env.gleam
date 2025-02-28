@@ -8,6 +8,7 @@ pub type Env {
     database_pass: String,
     database_name: String,
     backend_port: Int,
+    secret_key_base: String,
   )
 }
 
@@ -22,6 +23,7 @@ pub fn load_env() -> Env {
   let assert Ok(db_password) = env.get_string("DATABASE_PASSWORD")
   let assert Ok(db_name) = env.get_string("DATABASE_NAME")
   let assert Ok(backend_port) = env.get_int("BACKEND_PORT")
+  let assert Ok(secret_key_base) = env.get_string("SECRET_KEY_BASE")
 
-  Env(db_host, db_user, db_password, db_name, backend_port)
+  Env(db_host, db_user, db_password, db_name, backend_port, secret_key_base)
 }

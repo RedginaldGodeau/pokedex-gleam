@@ -28,7 +28,7 @@ services:
     ports:
       - 127.0.0.1:8080:${BACKEND_PORT}
     volumes:
-      - ./:/app
+      - ./:/webapp
     env_file:
       - .env
       - .env.local

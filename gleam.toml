@@ -23,7 +23,9 @@ wisp = ">= 1.5.3 and < 2.0.0"
 dot_env = ">= 1.2.0 and < 2.0.0"
 simplifile = ">= 2.2.0 and < 3.0.0"
 gleam_json = ">= 2.3.0 and < 3.0.0"
+lustre = ">= 4.6.4 and < 5.0.0"
 
 
 [dev-dependencies]
-
+gleescript = ">= 1.4.0 and < 2.0.0"
+lustre_dev_tools = ">= 1.6.5 and < 2.0.0"

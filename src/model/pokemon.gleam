@@ -147,8 +147,7 @@ pub fn get_all(db: pog.Connection) -> Result(List(Pokemon), String) {
   let sql_query =
     "
     SELECT id, name, type_1, type_2, total, hp, attack, defense, sp_attack, sp_defense, speed, generation, legendary
-    FROM pokemon;
-    "
+    FROM pokemon;"
 
   let row_decoder = {
     pokemon_decoder()
@@ -162,6 +161,35 @@ pub fn get_all(db: pog.Connection) -> Result(List(Pokemon), String) {
   case query {
     Ok(response) -> Ok(response.rows)
     Error(_) -> Error("Erreur lors de la request SQL")
+  }
+}
+
+pub fn get_search(
+  search: String,
+  db: pog.Connection,
+) -> Result(List(Pokemon), String) {
+  let sql_query =
+    "
+    SELECT id, name, type_1, type_2, total, hp, attack, defense, sp_attack, sp_defense, speed, generation, legendary
+    FROM pokemon
+    WHERE lower(name) LIKE lower($1);"
+
+  let row_decoder = {
+    pokemon_decoder()
+  }
+
+  let query =
+    pog.query(sql_query)
+    |> pog.parameter(pog.text(search <> "%"))
+    |> pog.returning(row_decoder)
+    |> pog.execute(db)
+
+  case query {
+    Ok(response) -> Ok(response.rows)
+    Error(err) -> {
+      io.debug(err)
+      Error("Erreur lors de la request SQL")
+    }
   }
 }
 

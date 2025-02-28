@@ -10,6 +10,8 @@ import wisp
 import wisp/wisp_mist
 
 pub fn main() {
+  wisp.configure_logger()
+
   let environement = env.load_env()
   let db =
     datastore.new_database(
@@ -18,7 +20,7 @@ pub fn main() {
       environement.database_pass,
       environement.database_user,
     )
-  let ctx = context.Context(db, environement)
+  let ctx = context.Context(db, environement, static_directory())
 
   let assert Ok(count) = pokemon.count(db)
   case count {
@@ -26,12 +28,19 @@ pub fn main() {
     _ -> Nil
   }
 
-  wisp.configure_logger()
   let assert Ok(_) =
-    wisp_mist.handler(fn(req) { route.init_route(req, ctx) }, "")
+    wisp_mist.handler(
+      fn(req) { route.init_route(req, ctx) },
+      environement.secret_key_base,
+    )
     |> mist.new
     |> mist.bind("0.0.0.0")
     |> mist.port(environement.backend_port)
     |> mist.start_http
   process.sleep_forever()
+}
+
+fn static_directory() -> String {
+  let assert Ok(priv_directory) = wisp.priv_directory("backend")
+  priv_directory <> "/static"
 }

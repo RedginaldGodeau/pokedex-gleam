@@ -11,8 +11,12 @@ Une API simple permettant de récupérer des informations sur les Pokémon via l
 
 L'API expose les routes suivantes :
 
+- `GET /` - La homepage avec tout les pokemons affiché
+- `GET /pokemon/{id}` - Récupère les informations d'un Pokémon via son ID et affiche la page d'information
 - `GET /id/{id du pokemon}` - Récupère les informations d'un Pokémon via son ID
 - `GET /name/{nom du pokemon}` - Récupère les informations d'un Pokémon via son nom
+- `GET /all/` - Récupère les informations de tout les Pokémons
+- `GET /search/{nom du pokemon}` - Récupère les informations d'un Pokémon via son le début de son nom
 
 ## 📋 Prérequis
 
@@ -28,7 +32,11 @@ git clone https://github.com/RedginaldGodeau/pokedex-gleam.git
 cd pokedex-gleam
 ```
 
-2. Lancez le projet avec Make :
+2. Créer le .env.local :
+
+Copier le .env et nommé le .env.local et ajouter les différantes valeurs.
+
+3. Lancez le projet avec Make :
 
 ```bash
 make run
@@ -39,11 +47,17 @@ Cela va construire et démarrer les conteneurs Docker nécessaires au fonctionne
 ## 🔍 Exemples d'utilisation
 
 ```bash
+# Récupérer tous les pokemons
+curl http://localhost:8080/all
+
 # Récupérer les informations du Pokémon avec l'ID 25 (Pikachu)
 curl http://localhost:8080/id/25
 
 # Récupérer les informations du Pokémon nommé "Charizard"
 curl http://localhost:8080/name/charizard
+
+# Récupérer les informations des Pokémon qui commence par  "char"
+curl http://localhost:8080/name/char
 ```
 
 ## 📊 Source des données
@@ -55,17 +69,10 @@ https://gist.github.com/armgilles/194bcff35001e7eb53a2a8b441e8b2c6
 
 Voici quelques axes d'amélioration envisagés pour ce projet :
 
-### 🖥️ Front-end avec Lustre
+### 🖥️ Ajouter du css & du js ou un front-end externe avec lustre
 
-- Intégrer un front-end utilisant [Lustre](https://lustre.build/), un framework moderne pour Gleam
-- Créer une interface utilisateur intuitive et responsive pour explorer les données Pokémon
-- Ajouter des visualisations des statistiques des Pokémon
-
-### 🔎 Amélioration de la recherche
-
-- Implémenter une recherche avancée par type de Pokémon
-- Ajouter des filtres par génération, statistiques, etc.
-- Intégrer une fonctionnalité d'auto-complétion pour la recherche par nom
+- intergré le static file pour ajouter le main.css
+- refaire le front-end à part du projet
 
 ### ⚠️ Optimisation des erreurs
 
